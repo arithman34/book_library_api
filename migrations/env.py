@@ -19,7 +19,7 @@ if config.config_file_name is not None:
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 from database import Base, engine
-from models_db import BookDB
+from models_db import BookDB, UserDB, BorrowDB
 
 config.set_main_option("sqlalchemy.url", str(engine.url))
 
