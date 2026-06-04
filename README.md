@@ -1,5 +1,12 @@
 # Book Library API
-A simple REST API built with FastAPI to manage a collection of books. This project demonstrates basic CRUD operations, routing, and data validation using Pydantic models. The API allows you to create, read, update, and delete books from a PostgreSQL database.
+
+A REST API built with FastAPI and PostgreSQL to manage a collection of books. Covers CRUD operations, Pydantic validation, SQLAlchemy ORM, and database migrations with Alembic.
+
+## Tech Stack
+
+- Python, FastAPI, Pydantic
+- PostgreSQL, SQLAlchemy, Alembic
+- Uvicorn
 
 ## Getting Started
 
@@ -49,9 +56,17 @@ book_library_api/
 ├── .env.example
 ├── .gitattributes
 ├── .gitignore
+├── alembic.ini
 ├── database.py
 ├── LICENSE
 ├── main.py
+├── migrations/
+│   ├── env.py
+│   ├── README
+│   ├── script.py.mako
+│   └── versions/
+│       ├── 7d682c276af1_create_books_table.py
+│       └── 87a244f8dd53_added_published_year_to_book.py
 ├── models_db.py
 ├── models.py
 ├── README.md
@@ -78,7 +93,7 @@ Python FAST API Tutorial](https://www.youtube.com/watch?v=-ykeT6kk4bk). Features
 
 ## Future Work
 
-Testing and Alembic migrations will be added in a follow-up project.
+Testing will be added in a follow-up project.
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
