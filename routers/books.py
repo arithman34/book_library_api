@@ -22,7 +22,7 @@ def get_book(book_id: int, db: Session = Depends(get_db)):
 
 @router.post("", response_model=Book, status_code=201)
 def add_book(book: BookCreate, db: Session = Depends(get_db)):
-    new_book = BookDB(title=book.title, author=book.author)
+    new_book = BookDB(title=book.title, author=book.author, published_year=book.published_year)
     db.add(new_book)
     db.commit()
     db.refresh(new_book)
@@ -38,6 +38,8 @@ def update_book(book_id: int, updated_book: BookUpdate, db: Session = Depends(ge
         book.title = updated_book.title
     if updated_book.author is not None:
         book.author = updated_book.author
+    if updated_book.published_year is not None:
+        book.published_year = updated_book.published_year
 
     db.commit()
     db.refresh(book)

@@ -7,6 +7,7 @@ class BookDB(Base):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     title: Mapped[str] = mapped_column(nullable=False)
     author: Mapped[str] = mapped_column(nullable=False)
+    published_year: Mapped[int | None] = mapped_column(nullable=True)
 
     def __repr__(self) -> str:
         return f"BookDB(id={self.id}, title='{self.title}', author='{self.author}')"
