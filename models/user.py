@@ -1,21 +1,18 @@
-from pydantic import BaseModel, Field, EmailStr
+from database import Base
+from sqlalchemy import func
+from sqlalchemy.orm import Mapped, mapped_column
 from datetime import datetime
 
+class UserDB(Base):
+    __tablename__ = "users"
 
-class UserBase(BaseModel):
-    username: str = Field(..., min_length=3, max_length=50)
-    email: EmailStr = Field(...)
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    username: Mapped[str] = mapped_column(nullable=False, unique=True)
+    email: Mapped[str] = mapped_column(nullable=False, unique=True)
+    hashed_password: Mapped[str] = mapped_column(nullable=False)
+    is_admin: Mapped[bool] = mapped_column(nullable=False, default=False)
+    created_at: Mapped[datetime] = mapped_column(nullable=False, server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(nullable=False, server_default=func.now(), onupdate=func.now())
 
-class User(UserBase):
-    id: int = Field(...)
-
-class UserCreate(UserBase):
-    password: str = Field(..., min_length=8)
-
-class UserUpdate(BaseModel):
-    id: int
-    is_admin: bool
-    created_at: datetime
-    updated_at: datetime
-
-    model_config = {"from_attributes": True}
+    def __repr__(self) -> str:
+        return f"UserDB(id={self.id}, username='{self.username}', email='{self.email}', is_admin='{self.is_admin}')"

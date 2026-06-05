@@ -1,30 +1,24 @@
-from pydantic import BaseModel, Field
+from database import Base
+from sqlalchemy import func, CheckConstraint
+from sqlalchemy.orm import Mapped, mapped_column
 from datetime import datetime
 
 
-class BookBase(BaseModel):
-    isbn: str = Field(..., min_length=13, max_length=13)
-    title: str = Field(..., min_length=1, max_length=200)
-    author: str = Field(..., min_length=1, max_length=100)
-    genre: str = Field(..., min_length=1, max_length=50)
-    published_year: int = Field(..., ge=0, lt=2100)
-    
+class BookDB(Base):
+    __tablename__ = "books"
+    __table_args__ = (
+        CheckConstraint("published_year >= 0 AND published_year < 2100", name="check_published_year"),
+        CheckConstraint("char_length(isbn) = 13", name="check_isbn_length")
+    )
 
-class BookCreate(BookBase):
-    quantity: int = Field(..., ge=1)
+    isbn: Mapped[str] = mapped_column(primary_key=True)
+    title: Mapped[str] = mapped_column(nullable=False)
+    author: Mapped[str] = mapped_column(nullable=False)
+    genre: Mapped[str] = mapped_column(nullable=False)
+    published_year: Mapped[int] = mapped_column(nullable=False)
+    quantity: Mapped[int] = mapped_column(nullable=False)
+    created_at: Mapped[datetime] = mapped_column(nullable=False, server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(nullable=False, server_default=func.now(), onupdate=func.now())
 
-
-class BookUpdate(BaseModel):
-    title: str | None = Field(None, min_length=1, max_length=200)
-    author: str | None = Field(None, min_length=1, max_length=100)
-    genre: str | None = Field(None, min_length=1, max_length=50)
-    published_year: int | None = Field(None, ge=0, lt=2100)
-    quantity: int | None = Field(None, ge=0)
-
-
-class BookResponse(BookBase):
-    quantity: int
-    created_at: datetime
-    updated_at: datetime
-
-    model_config = {"from_attributes": True}
+    def __repr__(self) -> str:
+        return f"BookDB(isbn={self.isbn}, title='{self.title}', quantity='{self.quantity}')"
