@@ -1,11 +1,12 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
+from auth import get_current_user
 from database import get_db
+from models.user import UserDB
 from schemas import BookCreate, BookUpdate, BookResponse
 from models import BookDB
 
 router = APIRouter(prefix="/books", tags=["books"])
-
 
 @router.get("", response_model=list[BookResponse])
 def get_books(limit: int = 10, offset: int = 0, db: Session = Depends(get_db)):
@@ -21,7 +22,10 @@ def get_book(isbn: str, db: Session = Depends(get_db)):
     return book
 
 @router.post("", response_model=BookResponse, status_code=201)
-def add_book(book: BookCreate, db: Session = Depends(get_db)):
+def add_book(book: BookCreate, db: Session = Depends(get_db), current_user: UserDB = Depends(get_current_user)):
+    if not current_user.is_admin:
+        raise HTTPException(status_code=403, detail="Only admins can add books.")
+
     new_book = BookDB(**book.model_dump())
     db.add(new_book)
     db.commit()
@@ -29,7 +33,10 @@ def add_book(book: BookCreate, db: Session = Depends(get_db)):
     return new_book
 
 @router.put("/{isbn}", response_model=BookResponse)
-def update_book(isbn: str, updated_book: BookUpdate, db: Session = Depends(get_db)):
+def update_book(isbn: str, updated_book: BookUpdate, db: Session = Depends(get_db), current_user: UserDB = Depends(get_current_user)):
+    if not current_user.is_admin:
+        raise HTTPException(status_code=403, detail="Only admins can update books.")
+
     book = db.query(BookDB).filter(BookDB.isbn == isbn).first()
     if book is None:
         raise HTTPException(status_code=404, detail="Book not found.")
@@ -38,8 +45,6 @@ def update_book(isbn: str, updated_book: BookUpdate, db: Session = Depends(get_d
         book.title = updated_book.title
     if updated_book.author is not None:
         book.author = updated_book.author
-    if updated_book.genre is not None:
-        book.genre = updated_book.genre
     if updated_book.published_year is not None:
         book.published_year = updated_book.published_year
     if updated_book.quantity is not None:
@@ -50,7 +55,10 @@ def update_book(isbn: str, updated_book: BookUpdate, db: Session = Depends(get_d
     return book
 
 @router.delete("/{isbn}", response_model=BookResponse)
-def delete_book(isbn: str, db: Session = Depends(get_db)):
+def delete_book(isbn: str, db: Session = Depends(get_db), current_user: UserDB = Depends(get_current_user)):
+    if not current_user.is_admin:
+        raise HTTPException(status_code=403, detail="Only admins can delete books.")
+    
     book = db.query(BookDB).filter(BookDB.isbn == isbn).first()
     if book is None:
         raise HTTPException(status_code=404, detail="Book not found.")

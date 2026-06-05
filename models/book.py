@@ -14,7 +14,6 @@ class BookDB(Base):
     isbn: Mapped[str] = mapped_column(primary_key=True)
     title: Mapped[str] = mapped_column(nullable=False)
     author: Mapped[str] = mapped_column(nullable=False)
-    genre: Mapped[str] = mapped_column(nullable=False)
     published_year: Mapped[int] = mapped_column(nullable=False)
     quantity: Mapped[int] = mapped_column(nullable=False)
     created_at: Mapped[datetime] = mapped_column(nullable=False, server_default=func.now())
