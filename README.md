@@ -1,12 +1,13 @@
 # Book Library API
 
-A REST API built with FastAPI and PostgreSQL to manage a collection of books. Covers CRUD operations, Pydantic validation, SQLAlchemy ORM, JWT authentication and database migrations with Alembic.
+A REST API built with FastAPI and PostgreSQL to manage a collection of books. Covers CRUD operations, Pydantic validation, SQLAlchemy ORM, JWT authentication, database migrations with Alembic, and a full pytest test suite with 99% coverage.
 
 ## Tech Stack
 
 - Python, FastAPI, Pydantic
 - PostgreSQL, SQLAlchemy, Alembic
 - JWT authentication (python-jose, passlib/bcrypt)
+- pytest, pytest-cov
 - Uvicorn
 
 ## Getting Started
@@ -49,11 +50,37 @@ uvicorn backend.main:app --port 8000 --reload
 
 7. Open http://127.0.0.1:8000/docs to explore the API documentation and test the endpoints.
 
+8. (Optional) Seed the database with sample books
+```bash
+python -m backend.seed
+```
+
+## Running Tests
+
+1. Set up a separate test database and create a `.env.test` file
+```bash
+cp .env.test.example .env.test
+```
+Then open `.env.test` and fill in your values:
+```bash
+TEST_DATABASE_URL=postgresql://username:password@localhost:5432/book_library_test
+SECRET_KEY=your-secret-key
+```
+
+2. Run the test suite
+```bash
+pytest
+```
+
+3. To view a browsable HTML coverage report, open `htmlcov/index.html` after running pytest.
+
 ## Project Structure
 
 ```
 book_library_api/
+├── .coveragerc
 ├── .env.example
+├── .env.test.example
 ├── .gitattributes
 ├── .gitignore
 ├── alembic.ini
@@ -62,7 +89,6 @@ book_library_api/
 │   ├── auth.py
 │   ├── database.py
 │   ├── main.py
-│   ├── seed.py
 │   ├── models/
 │   │   ├── __init__.py
 │   │   ├── book.py
@@ -73,20 +99,30 @@ book_library_api/
 │   │   ├── auth.py
 │   │   ├── book.py
 │   │   └── borrow.py
-│   └── schemas/
-│       ├── __init__.py
-│       ├── book.py
-│       ├── borrow.py
-│       ├── token.py
-│       └── user.py
+│   ├── schemas/
+│   │   ├── __init__.py
+│   │   ├── book.py
+│   │   ├── borrow.py
+│   │   ├── token.py
+│   │   └── user.py
+│   └── seed.py
 ├── LICENSE
 ├── migrations/
 │   ├── env.py
 │   ├── README
 │   ├── script.py.mako
 │   └── versions/
+│       ├── 0e7729303c7d_remove_genre_column.py
+│       └── 7025c99c1e50_initial_schema.py
+├── pytest.ini
 ├── README.md
-└── requirements.txt
+├── requirements.txt
+└── tests/
+    ├── __init__.py
+    ├── conftest.py
+    ├── test_auth.py
+    ├── test_book.py
+    └── test_borrow.py
 ```
 
 ## Endpoints
@@ -114,7 +150,6 @@ book_library_api/
 
 ## Future Work
 
-- Pytest test suite (unit + integration tests)
 - Tkinter desktop frontend (`frontend/`)
 
 ## License
