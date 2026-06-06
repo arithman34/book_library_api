@@ -4,12 +4,16 @@ from backend.auth import get_current_user
 from backend.database import get_db
 from backend.models.user import UserDB
 from backend.schemas import BorrowCreate, BorrowResponse
-from backend.models import BorrowDB
+from backend.models import BookDB, BorrowDB
 
 router = APIRouter(prefix="/borrows", tags=["borrows"])
 
 @router.post("", response_model=BorrowResponse, status_code=201)
 def borrow_book(borrow: BorrowCreate, db: Session = Depends(get_db), current_user: UserDB = Depends(get_current_user)):
+    book = db.query(BookDB).filter(BookDB.isbn == borrow.book_id).first()
+    if not book:
+        raise HTTPException(status_code=404, detail="Book not found.")
+
     new_borrow = BorrowDB(**borrow.model_dump(), user_id=current_user.id)
     db.add(new_borrow)
     db.commit()

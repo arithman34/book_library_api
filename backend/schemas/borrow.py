@@ -11,6 +11,7 @@ class BorrowResponse(BorrowBase):
     id: int
     user_id: int
     borrowed_at: datetime
+    due_date: datetime
     returned: bool
 
     model_config = {"from_attributes": True}

@@ -13,6 +13,3 @@ class BorrowDB(Base):
     due_date: Mapped[datetime] = mapped_column(nullable=False)
     borrowed_at: Mapped[datetime] = mapped_column(nullable=False, server_default=func.now())
     returned: Mapped[bool] = mapped_column(nullable=False, default=False)
-
-    def __repr__(self) -> str:
-        return f"BorrowDB(id={self.id}, user_id={self.user_id}, book_id={self.book_id}, borrowed_at={self.borrowed_at}, due_date={self.due_date}, returned={self.returned})"

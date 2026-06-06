@@ -1,0 +1,5 @@
+[run]
+omit =
+    backend/seed.py
+    backend/database.py
+    backend/main.py

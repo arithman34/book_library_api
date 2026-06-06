@@ -18,6 +18,3 @@ class BookDB(Base):
     quantity: Mapped[int] = mapped_column(nullable=False)
     created_at: Mapped[datetime] = mapped_column(nullable=False, server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(nullable=False, server_default=func.now(), onupdate=func.now())
-
-    def __repr__(self) -> str:
-        return f"BookDB(isbn={self.isbn}, title='{self.title}', quantity='{self.quantity}')"

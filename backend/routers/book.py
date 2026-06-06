@@ -10,7 +10,7 @@ router = APIRouter(prefix="/books", tags=["books"])
 
 @router.get("", response_model=list[BookResponse])
 def get_books(limit: int = 10, offset: int = 0, db: Session = Depends(get_db)):
-    return db.query(BookDB).offset(offset).limit(limit).all()
+    return db.query(BookDB).order_by(BookDB.isbn).offset(offset).limit(limit).all()
 
 @router.get("/{isbn}", response_model=BookResponse)
 def get_book(isbn: str, db: Session = Depends(get_db)):
@@ -25,6 +25,10 @@ def get_book(isbn: str, db: Session = Depends(get_db)):
 def add_book(book: BookCreate, db: Session = Depends(get_db), current_user: UserDB = Depends(get_current_user)):
     if not current_user.is_admin:
         raise HTTPException(status_code=403, detail="Only admins can add books.")
+    
+    existing_book = db.query(BookDB).filter(BookDB.isbn == book.isbn).first()
+    if existing_book:
+        raise HTTPException(status_code=400, detail="Book already exists.")
 
     new_book = BookDB(**book.model_dump())
     db.add(new_book)
