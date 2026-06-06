@@ -1,5 +1,5 @@
-from database import SessionLocal
-from models.book import BookDB
+from backend.database import SessionLocal
+from backend.models.book import BookDB
 
 books = [
     {"isbn": "9798745274824", "title": "The Great Gatsby", "author": "F. Scott Fitzgerald", "published_year": 2021, "quantity": 5},

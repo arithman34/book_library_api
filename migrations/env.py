@@ -18,8 +18,8 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from database import Base, engine
-from models import BookDB, UserDB, BorrowDB
+from backend.database import Base, engine
+from backend.models import BookDB, UserDB, BorrowDB
 
 config.set_main_option("sqlalchemy.url", str(engine.url))
 

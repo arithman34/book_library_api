@@ -44,7 +44,7 @@ SECRET_KEY=your-secret-key
 
 6. Run the application on port 8000
 ```bash
-uvicorn main:app --port 8000 --reload
+uvicorn backend.main:app --port 8000 --reload
 ```
 
 7. Open http://127.0.0.1:8000/docs to explore the API documentation and test the endpoints.
@@ -57,34 +57,36 @@ book_library_api/
 ├── .gitattributes
 ├── .gitignore
 ├── alembic.ini
-├── auth.py
-├── database.py
+├── backend/
+│   ├── __init__.py
+│   ├── auth.py
+│   ├── database.py
+│   ├── main.py
+│   ├── seed.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── book.py
+│   │   ├── borrow.py
+│   │   └── user.py
+│   ├── routers/
+│   │   ├── __init__.py
+│   │   ├── auth.py
+│   │   ├── book.py
+│   │   └── borrow.py
+│   └── schemas/
+│       ├── __init__.py
+│       ├── book.py
+│       ├── borrow.py
+│       ├── token.py
+│       └── user.py
 ├── LICENSE
-├── main.py
-├── seed.py
 ├── migrations/
 │   ├── env.py
 │   ├── README
 │   ├── script.py.mako
 │   └── versions/
-├── models/
-│   ├── __init__.py
-│   ├── book.py
-│   ├── borrow.py
-│   └── user.py
 ├── README.md
-├── requirements.txt
-├── routers/
-│   ├── __init__.py
-│   ├── auth.py
-│   ├── book.py
-│   └── borrow.py
-└── schemas/
-    ├── __init__.py
-    ├── book.py
-    ├── borrow.py
-    ├── token.py
-    └── user.py
+└── requirements.txt
 ```
 
 ## Endpoints
@@ -113,6 +115,7 @@ book_library_api/
 ## Future Work
 
 - Pytest test suite (unit + integration tests)
+- Tkinter desktop frontend (`frontend/`)
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
