@@ -8,9 +8,48 @@ A REST API built with FastAPI and PostgreSQL to manage a collection of books. Co
 - PostgreSQL, SQLAlchemy, Alembic
 - JWT authentication (python-jose, passlib/bcrypt)
 - pytest, pytest-cov
+- Docker, Docker Compose
 - Uvicorn
 
-## Getting Started
+## Running with Docker (Recommended)
+
+1. Clone the repo and navigate into it
+```bash
+git clone https://github.com/arithman34/book_library_api
+cd book_library_api
+```
+
+2. Set up your environment variables
+```bash
+cp .env.example .env
+```
+Then open `.env` and fill in your `DATABASE_URL` and `SECRET_KEY`.
+
+3. Build and start the containers
+```bash
+docker compose up --build
+```
+
+4. In a second terminal, run migrations
+```bash
+docker compose exec backend alembic upgrade head
+```
+
+5. (Optional) Seed the database with sample books
+```bash
+docker compose exec backend python -m backend.seed
+```
+
+6. Open http://localhost:8000/docs to explore and test the API.
+
+To stop:
+```bash
+docker compose down
+```
+
+---
+
+## Getting Started (without Docker)
 
 1. Clone the repo and navigate into it
 ```bash
@@ -79,6 +118,7 @@ pytest
 ```
 book_library_api/
 ├── .coveragerc
+├── .dockerignore
 ├── .env.example
 ├── .env.test.example
 ├── .gitattributes
@@ -114,6 +154,8 @@ book_library_api/
 │   └── versions/
 │       ├── 0e7729303c7d_remove_genre_column.py
 │       └── 7025c99c1e50_initial_schema.py
+├── docker-compose.yml
+├── Dockerfile
 ├── pytest.ini
 ├── README.md
 ├── requirements.txt
