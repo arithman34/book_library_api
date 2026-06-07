@@ -146,6 +146,9 @@ book_library_api/
 │   │   ├── token.py
 │   │   └── user.py
 │   └── seed.py
+├── docker-compose.yml
+├── Dockerfile
+├── entrypoint.sh
 ├── LICENSE
 ├── migrations/
 │   ├── env.py
@@ -154,8 +157,6 @@ book_library_api/
 │   └── versions/
 │       ├── 0e7729303c7d_remove_genre_column.py
 │       └── 7025c99c1e50_initial_schema.py
-├── docker-compose.yml
-├── Dockerfile
 ├── pytest.ini
 ├── README.md
 ├── requirements.txt
@@ -165,6 +166,7 @@ book_library_api/
     ├── test_auth.py
     ├── test_book.py
     └── test_borrow.py
+
 ```
 
 ## Endpoints
