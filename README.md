@@ -1,5 +1,7 @@
 # Book Library API
 
+**Live API:** https://book-library-api-ypv5.onrender.com/docs
+
 A REST API built with FastAPI and PostgreSQL to manage a collection of books. Covers CRUD operations, Pydantic validation, SQLAlchemy ORM, JWT authentication, database migrations with Alembic, and a full pytest test suite with 99% coverage.
 
 ## Tech Stack
